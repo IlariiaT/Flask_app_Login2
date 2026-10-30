@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Мій профіль 💜{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Мій профіль 💜</h1>
+
+
+{% if user.avatar_filename %}
+    <img
+        src="{{ url_for('static', filename='uploads/' ~ user.avatar_filename) }}"
+        alt="Аватарка"
+        class="avatar"
+    >
+{% else %}
+    <div class="avatar avatar-placeholder">
+        {{ user.name[0]|upper }}
+    </div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data"
+      action="{{ url_for('profile') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label for="avatar">Обери аватарку 📸</label>
+    <input
+        type="file"
+        id="avatar"
+        name="avatar"
+        accept="image/png,image/jpeg,image/gif,image/webp"
+        required
+    >
+
+    <button type="submit">Завантажити аватарку 💜</button>
+</form>
+
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+<a href="{{ url_for('home') }}">← Назад до стрічки</a>
+
+</div>
+{% endblock %}

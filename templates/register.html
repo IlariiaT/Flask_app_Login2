@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3edff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .register-box {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 320px;
+            box-shadow: 0 4px 20px #d8c9f0;
+        }
+
+        h1 {
+            color: #7041b8;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #cbb8e8;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 11px;
+            margin-top: 22px;
+            background: #8052c7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #6839ad;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-box">
+        <h1>Створити акаунт</h1>
+
+        <form method="POST" action="/register">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="name">Ім'я</label>
+            <input id="name" name="name" type="text" required>
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="password">Пароль</label>
+            <input id="password" name="password"
+                   type="password" minlength="8" required>
+
+            <button type="submit">Зареєструватися</button>
+            {% if error %}
+                <p style="color: #c0392b;">{{ error }}</p>
+            {% endif %}
+        </form>
+
+        <p>Уже є акаунт? <a href="/login">Увійти</a></p>
+    </div>
+</body>
+</html>

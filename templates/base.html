@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Моя соцмережа 💜{% endblock %}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f0ff;
+            color: #35234d;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px #d9c8ee;
+        }
+
+        h1, h2 {
+            color: #8054b8;
+        }
+
+        a, button {
+            display: inline-block;
+            margin: 8px 5px 8px 0;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #9164c5;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        input, textarea {
+            box-sizing: border-box;
+            width: 100%;
+            margin: 8px 0 15px;
+            padding: 12px;
+            border: 1px solid #d8c7ec;
+            border-radius: 10px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 15px auto;
+            border: 3px solid #b69cff;
+        }
+
+        .avatar-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eee5ff;
+            color: #7044b8;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #d63384;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

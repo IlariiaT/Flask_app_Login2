@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вхід</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f0ff;
+            color: #292342;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            width: 320px;
+            box-shadow: 0 8px 30px #29234215;
+        }
+
+        h1 { text-align: center; }
+
+        label {
+            display: block;
+            margin-top: 16px;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #d8d0ef;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 22px;
+            border: 0;
+            border-radius: 8px;
+            background: #7057d9;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        a { color: #7057d9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>З поверненням!</h1>
+        <p>Увійди до свого акаунта.</p>
+
+        <form method="POST" action="/login">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="password">Пароль</label>
+            <input id="password" name="password" type="password" required>
+             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <button type="submit">Увійти</button>
+            {% if error %}
+                <p style="color: #c0392b;">{{ error }}</p>
+            {% endif %}
+        </form>
+
+        <p>Ще немає акаунта? <a href="/register">Реєстрація</a></p>
+        <a href="/">← На головну</a>
+    </div>
+</body>
+</html>

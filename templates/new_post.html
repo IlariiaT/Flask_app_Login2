@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новий допис 💜</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            font-family: Arial, sans-serif;
+            background: #f4f0ff;
+            color: #35234d;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 28px;
+            background: white;
+            border-radius: 22px;
+            box-shadow: 0 8px 28px #dfd2f2;
+        }
+
+        h1 { color: #7057d9; }
+
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 160px;
+            padding: 14px;
+            border: 1px solid #d9ccef;
+            border-radius: 12px;
+            font: inherit;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 18px 0;
+            max-width: 100%;
+        }
+
+        button, .back {
+            display: inline-block;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #7057d9;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .back {
+            background: #eee7fb;
+            color: #5945b5;
+            margin-left: 6px;
+        }
+
+        .error { color: #b42355; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Створити допис ✨</h1>
+        <p>Поділися своїми думками або улюбленою фотографією.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST"
+              action="{{ url_for('new_post') }}"
+              enctype="multipart/form-data">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <label for="content">Текст допису</label>
+            <textarea id="content"
+                      name="content"
+                      maxlength="5000"
+                      placeholder="Про що ти сьогодні думаєш? 💜"
+                      required></textarea>
+
+            <label for="image">Додати картинку (необов'язково)</label>
+            <input id="image"
+                   type="file"
+                   name="image"
+                   accept="image/png,image/jpeg,image/gif,image/webp">
+
+            <button type="submit">Опублікувати 💜</button>
+            <a class="back" href="{{ url_for('home') }}">Назад</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стрічка 💜</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f0ff;
+            color: #35234d;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 20px 7%;
+            background: white;
+            box-shadow: 0 2px 10px #e2d7f355;
+        }
+
+        nav a {
+            color: #7057d9;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 12px;
+        }
+
+        nav a:hover {
+            color: #4c32a8;
+        }
+
+        nav form {
+            display: inline;
+        }
+
+        nav button {
+            border: none;
+            background: #eee5ff;
+            color: #7057d9;
+            padding: 9px 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 12px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            margin: 35px auto;
+            padding: 0 16px;
+            flex: 1;
+        }
+
+        .create,
+        .post {
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 22px;
+            box-shadow: 0 6px 22px #e2d7f3;
+        }
+
+        .create h2 {
+            margin-top: 0;
+        }
+
+        .create a {
+            color: white;
+            background: #7057d9;
+            padding: 12px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .create a:hover {
+            background: #5940bd;
+        }
+
+        .author-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 0;
+            border: 2px solid #e2d7f3;
+            background: #eee5ff;
+        }
+
+        .avatar-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7057d9;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .author {
+            color: #7057d9;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .content {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.6;
+        }
+
+        .post-image {
+            display: block;
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            margin-top: 16px;
+            border-radius: 14px;
+            background: #f4f0ff;
+        }
+
+        .date {
+            color: #898097;
+            font-size: 13px;
+            margin-top: 16px;
+        }
+
+        .delete-form {
+            margin-top: 15px;
+        }
+
+        .delete-button {
+            background: #ffe5ec;
+            color: #b4234d;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-button:hover {
+            background: #ffd0dc;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px 15px;
+            color: #776a8c;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            background: white;
+            color: #898097;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        footer strong {
+            color: #7057d9;
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 16px;
+            }
+
+            nav a {
+                margin-left: 6px;
+            }
+
+            .create,
+            .post {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <strong>MyWebsite ✦</strong>
+
+        <div>
+            {% if logged_in %}
+                <a href="{{ url_for('profile') }}">Мій профіль</a>
+                <a href="{{ url_for('new_post') }}">＋ Допис</a>
+
+                <form method="POST" action="{{ url_for('logout') }}">
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
+                    <button type="submit">Вийти</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}">Увійти</a>
+                <a href="{{ url_for('register') }}">Реєстрація</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <section class="create">
+            <h2>Твоя стрічка 💜</h2>
+            <p>Ділися моментами, думками та натхненням.</p>
+
+            {% if logged_in %}
+                <a href="{{ url_for('new_post') }}">
+                    ＋ Створити допис
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}">
+                    Увійди, щоб створити допис
+                </a>
+            {% endif %}
+        </section>
+
+        {% for post in posts %}
+
+            <article class="post">
+
+                <div class="author-row">
+                    {% if post.author.avatar_filename %}
+                        <img
+                            src="{{ url_for('static', filename='uploads/' ~ post.author.avatar_filename) }}"
+                            alt="Аватарка автора"
+                            class="avatar"
+                        >
+                    {% else %}
+                        <div class="avatar avatar-placeholder">
+                            {{ post.author.name[0]|upper }}
+                        </div>
+                    {% endif %}
+
+                    <div class="author">
+                        {{ post.author.name }}
+                    </div>
+                </div>
+
+                <div class="content">{{ post.content }}</div>
+
+                {% if post.image_filename %}
+                    <img
+                        src="{{ url_for('static', filename='uploads/' ~ post.image_filename) }}"
+                        alt="Картинка до допису"
+                        class="post-image"
+                    >
+                {% endif %}
+
+                <div class="date">
+                    {% if post.created_at %}
+                        {{ post.created_at.strftime('%d.%m.%Y') }}
+                        о
+                        {{ post.created_at.strftime('%H:%M') }}
+                    {% else %}
+                        Допис
+                    {% endif %}
+                </div>
+
+                {% if logged_in and session.get('user_id') == post.user_id %}
+                    <form
+                        class="delete-form"
+                        method="POST"
+                        action="{{ url_for('delete_post', post_id=post.id) }}"
+                        onsubmit="return confirm('Точно видалити цей допис? 💜');"
+                    >
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="{{ csrf_token() }}"
+                        >
+
+                        <button
+                            type="submit"
+                            class="delete-button"
+                        >
+                            🗑️ Видалити допис
+                        </button>
+                    </form>
+                {% endif %}
+
+            </article>
+
+        {% else %}
+
+            <div class="post empty">
+                <h3>Тут поки тихенько 🌷</h3>
+                <p>Твої дописи з'являться тут після публікації.</p>
+            </div>
+
+        {% endfor %}
+
+    </main>
+
+    <footer>
+        <strong>MyWebsite ✦</strong>
+        <p>Твій маленький куточок в інтернеті 💜</p>
+        <span>© 2026 MyWebsite</span>
+    </footer>
+
+</body>
+</html>
